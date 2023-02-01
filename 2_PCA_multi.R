@@ -7,8 +7,6 @@
 
 runID <- # set runID
 wd <- # set working directory
-ncluster <-  # set up how many jobs to run in parallel
-nthreads <-  # limit number of cores for each task
 
 transform.type <- c("Total", "Syn1")
 masks <- c("head", "limbs", "torso", "wholebody")
@@ -65,8 +63,15 @@ runPCA <- function(wd = getwd(), transform.type, mask, runID){
 }
 
 
-
-
+for (i in 1:length(transform.type)) {
+  for (j in 1:length(masks)) {
+    print(paste0("Starting ", transform.type[i], "-", masks[j], " : ", Sys.time()))
+    runPCA(transform.type = transform.type[i], 
+           mask = masks[j],
+           runID = runID)
+    print(paste0("Completed ", transform.type[i], "-", masks[j], " : ", Sys.time()))
+  }
+}
 
 
 
