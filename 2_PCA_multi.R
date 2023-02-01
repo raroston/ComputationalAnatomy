@@ -62,7 +62,6 @@ runPCA <- function(wd = getwd(), transform.type, mask, runID){
   
 }
 
-
 for (i in 1:length(transform.type)) {
   for (j in 1:length(masks)) {
     print(paste0("Starting ", transform.type[i], "-", masks[j], " : ", Sys.time()))
