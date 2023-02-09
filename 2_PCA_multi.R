@@ -5,9 +5,9 @@
 # This script runs a multichannelPCA on a list of transforms and saves the results. 
 # Transforms & TotalTransforms were generated with "1_registration.R"
 
-runID <- # set runID
-wd <- # set working directory
-omit <-  # pattern(s) used to select specific transforms to omit from PCA
+runID <- "002" # set runID
+wd <- getwd()    # working directory
+omit <- "anat"  # pattern(s) used to select specific transforms to omit from PCA
 
 transform.type <- c("Total", "Syn1")
 masks <- c("head", "limbs", "torso", "wholebody")
@@ -55,13 +55,14 @@ runPCA <- function(wd = getwd(), transform.type, mask, runID, omit){
       
       if (transform.type == "Total"){
         folder <- "/TotalTransforms/"
-        transformlist = createtransformlist(wd = wd, folder = folder, omit = omit)
+        transformlist <- createtransformlist(wd = wd, folder = folder, omit = omit)
         dir.create(paste0(wd, "/PCA/", runID))
         dir.PCAresults <- paste0(wd, "/PCA/", runID, "/", transform.type, "-", mask)
         doPCA(dir.PCAresults = dir.PCAresults, transformlist = transformlist, pca_mask = pca_mask)
       } else if (transform.type == "Syn1") {
         folder <- "/Transforms/"
-        transformlist = createtransformlist(wd = wd, folder = folder, omit = omit)
+        transformlist <- createtransformlist(wd = wd, folder = folder, omit = omit)
+        transformlist <- transformlist[grep(pattern = "_Warp", transformlist)]
         dir.PCAresults <- paste0(wd, "/PCA/", runID, "/", transform.type, "-", mask)
         doPCA(dir.PCAresults = dir.PCAresults, transformlist = transformlist, pca_mask = pca_mask)
       } else { 
@@ -83,7 +84,3 @@ for (i in 1:length(transform.type)) {
     print(paste0("Completed ", transform.type[i], "-", masks[j], " : ", Sys.time()))
   }
 }
-
-
-
-
